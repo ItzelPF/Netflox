@@ -35,6 +35,11 @@ header.black-bg{
     flex-direction: row;
     justify-content: space-between;
 }
+nav .logo {
+    padding-left: 3%;
+    padding-top: 3%;
+    width: 40%;
+}
 
 .left-cont, .right-cont{
     display: flex;

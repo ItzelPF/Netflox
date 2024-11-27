@@ -33,9 +33,15 @@ function displayProfiles(profiles) {
     const profileDiv = document.createElement("div");
     profileDiv.className = "profile";
     profileDiv.innerHTML = `
-      <img src="${profile.avatar || 'default_avatar.png'}" alt="${profile.name}""/>
+      <img src="${profile.avatar || 'default_avatar.png'}" alt="${profile.name}" />
       <span>${profile.name}</span>
     `;
+
+    // Añadir el evento para redirigir al contenido al hacer clic
+    profileDiv.addEventListener("click", () => {
+      redirectToContent(profile._id);
+    });
+
     profilesContainer.appendChild(profileDiv);
   });
 
@@ -50,8 +56,17 @@ function displayProfiles(profiles) {
   profilesContainer.appendChild(addProfileDiv);
 }
 
+// Función para redirigir a contenido.ejs con los IDs de usuario y perfil
+function redirectToContent(profileId) {
+  const userId = getUserIdFromURL();
+  if (userId && profileId) {
+    window.location.href = `/contenido/${userId}/${profileId}`;
+  } else {
+    console.error("No se pudieron obtener los IDs para redirigir.");
+  }
+}
+
 // Función para obtener el ID del usuario desde la URL
-// Función para obtener el ID desde la URL
 function getUserIdFromURL() {
   const path = window.location.pathname; // Obtiene el path de la URL
   const segments = path.split('/'); // Divide el path en segmentos

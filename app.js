@@ -211,6 +211,15 @@ app.get('/api/user/:userId/profiles', async (req, res) => {
   }
 });
 
+app.get("/contenido/:userId/:profileId", (req, res) => {
+  const { userId, profileId } = req.params; // Obtén userId y profileId de la URL
+
+  // Aquí puedes realizar cualquier lógica adicional, como buscar el perfil del usuario
+  // usando userId y profileId, si es necesario.
+
+  res.render("contenido", { userId, profileId }); // Pasa userId y profileId a la vista contenido.ejs
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
