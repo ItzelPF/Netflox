@@ -2,12 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 
+
 // Modelos
 const Movie = require("./models/Movies");
 const User = require("./models/User");
 const Vista = require("./models/Vista");
 const Recommendation = require("./models/Recommendation");
 const Payments = require("./models/Payments");
+const Profile = require("./models/User");
 
 // Configuración del servidor
 const app = express();
@@ -59,8 +61,8 @@ app.get("/suscribir", (req, res) => {
     res.render("suscribir"); // Renderiza el archivo suscribir.ejs
 });
 
-app.get("/peliculas", (req, res) => {
-  res.render("peliculas"); // Renderiza el archivo peliculas.ejs
+app.get("/contenido", (req, res) => {
+  res.render("contenido"); // Renderiza el archivo contenido.ejs
 });
 
 app.get("/anadirPerfil/:userId", (req, res) => {
@@ -68,11 +70,10 @@ app.get("/anadirPerfil/:userId", (req, res) => {
   res.render("anadirPerfil", { userId }); // Renderiza el archivo añadirperfiles.ejs
 });
 
-// Ruta POST para añadir un nuevo perfil
 app.post('/anadirPerfil/:userId', async (req, res) => {
   const { userId } = req.params;
   const { name, avatar } = req.body; // userId debe ser proporcionado en el formulario o la sesión
-  
+
   if (!userId) {
     return res.status(400).send('Error: Se necesita el ID del usuario');
   }
@@ -88,7 +89,7 @@ app.post('/anadirPerfil/:userId', async (req, res) => {
     const newProfile = {
       name,
       avatar: avatar || 'default_avatar.png', // Usa un avatar predeterminado si no se selecciona ninguno
-      watched: [],
+      watched: [],  // Asumimos que 'watched' es un array que puede llenarse después
     };
 
     // Añadir el perfil al usuario
@@ -97,18 +98,18 @@ app.post('/anadirPerfil/:userId', async (req, res) => {
     // Guardar los cambios en la base de datos
     await user.save();
 
-    // Responder al cliente
-    res.send(`
-      <h1>Perfil añadido exitosamente</h1>
-      <p>Nombre: ${name}</p>
-      <img src="${avatar}" alt="Avatar" />
-      <a href="/anadirPerfil">Añadir otro perfil</a>
-    `);
+    // Obtener el profileId del perfil recién creado
+    const profileId = user.profiles[user.profiles.length - 1]._id;
+
+    // Redirigir al cliente a la página de contenido
+    res.redirect(`/contenido/${userId}/${profileId}`);
+
   } catch (error) {
     console.error('Error al añadir el perfil:', error);
     res.status(500).send('Error del servidor al añadir el perfil');
   }
 });
+
 
 app.get("/perfiles/:userId", async (req, res) => {
   const { userId } = req.params;
@@ -211,16 +212,36 @@ app.get('/api/user/:userId/profiles', async (req, res) => {
   }
 });
 
-app.get("/contenido/:userId/:profileId", (req, res) => {
-  const { userId, profileId } = req.params; // Obtén userId y profileId de la URL
+app.get("/contenido/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
 
-  // Aquí puedes realizar cualquier lógica adicional, como buscar el perfil del usuario
-  // usando userId y profileId, si es necesario.
+  try {
+    // Busca al usuario y extrae su perfil
+    const user = await User.findById(userId);
 
-  res.render("contenido", { userId, profileId }); // Pasa userId y profileId a la vista contenido.ejs
+    if (!user) {
+      return res.status(404).send("Usuario no encontrado.");
+    }
+
+    // Busca el perfil dentro del usuario
+    const profile = user.profiles.id(profileId);
+
+    if (!profile) {
+      return res.status(404).send("Perfil no encontrado.");
+    }
+
+    // Renderiza la vista con el avatar del perfil
+    res.render("contenido", { userId, profileId, avatar: profile.avatar });
+  } catch (error) {
+    console.error("Error al buscar el perfil:", error);
+    res.status(500).send("Error interno del servidor.");
+  }
 });
 
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
+

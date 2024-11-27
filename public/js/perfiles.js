@@ -90,3 +90,37 @@ if (userId) {
 } else {
   console.error("No se pudo obtener el ID del usuario desde la URL.");
 }
+
+// Función para manejar la respuesta después de agregar un perfil
+async function handleAddProfile(event) {
+  event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+  const formData = new FormData(event.target); // Obtenemos los datos del formulario
+  const formDataObject = Object.fromEntries(formData.entries()); // Convertir a objeto
+
+  const { name, avatar, userId, profileId } = formDataObject;
+
+  try {
+    // Enviar los datos al servidor
+    const response = await fetch("/anadirPerfil", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, avatar, userId, profileId }),
+    });
+
+    if (!response.ok) throw new Error(`Failed to add profile: ${response.status}`);
+
+    // Redirigir a contenido.ejs
+    window.location.href = `/contenido/${userId}/${profileId}`;
+  } catch (error) {
+    console.error("Error adding profile:", error);
+  }
+}
+
+// Agregar el listener para el formulario
+const form = document.querySelector("form");
+if (form) {
+  form.addEventListener("submit", handleAddProfile);
+}
