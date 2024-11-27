@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/cuenta.css" />
+</head>
+<body>
+  <div class="contenido">
+    <nav>
+      <a href="/index">
+        <img class="logo" src="../img/logo.png" alt="Logo de Netflox" />
+      </a>
+    </nav>
+
+    <div class="caja">
+      <h2>Añadir Nuevo Perfil</h2>
+      <form method="POST" class="form">
+        <input type="text" name="name" placeholder="Nombre del perfil" required>
+        
+        <div class="avatar-preview">
+          <img id="avatarPreview" src="/img/perfil1.jpg" alt="Avatar Preview" />
+        </div>
+        
+        <select name="avatar" class="custom-select" onchange="updateAvatarPreview(this)">
+          <option value="/img/perfil1.jpg">Avatar 1</option>
+          <option value="/img/perfil2.jpg">Avatar 2</option>
+          <option value="/img/perfil3.jpg">Avatar 3</option>
+          <option value="/img/perfil4.jpg">Avatar 4</option>
+          <option value="/img/perfil5.jpg">Avatar 5</option>
+        </select>
+        
+        <button type="submit">Agregar Perfil</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>¿Preguntas? Llama al <a href="">449</a></p>
+  </footer>
+
+  <script>
+    // Función para actualizar la vista previa del avatar seleccionado
+    function updateAvatarPreview(selectElement) {
+      const preview = document.getElementById("avatarPreview");
+      preview.src = selectElement.value;
+    }
+    
+    // Función para obtener el ID desde la URL
+    function getUserIdFromPath() {
+      const path = window.location.pathname; // Obtiene el path de la URL
+      const segments = path.split('/'); // Divide el path en segmentos
+      return segments[segments.length - 1]; // Devuelve el último segmento (el ID del usuario)
+    }
+
+    // Modificar dinámicamente el atributo action del formulario
+    document.addEventListener("DOMContentLoaded", () => {
+      const userId = getUserIdFromPath(); // Extrae el ID del usuario
+      const form = document.querySelector("form"); // Selecciona el formulario
+
+      if (userId && form) {
+        form.action = `/anadirPerfil/${userId}`; // Modifica el atributo action
+      }
+    });
+  </script>
+</body>
+</html>

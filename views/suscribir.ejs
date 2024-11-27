@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar</title>
+  <link rel="stylesheet" href="./css/cuenta.css" />
+  <link rel="shortcut icon" type="image/jpg" href="img/netflix-flavicon.png" />
+</head>
+<body>
+  <div class="contenido">
+    <nav>
+      <a href="/index"><img class="logo" src="./img/logo.png" alt="netfloxLogo" /></a>
+    </nav>
+    <div class="caja">
+      <h2>Regístrate</h2>
+      <form action="/registrar" method="POST" class="form">
+        <input type="text" name="name" placeholder="Nombre" required />
+        <input type="email" name="email" placeholder="Correo electrónico" required />
+        <input type="password" name="password" placeholder="Contraseña" required />
+        <input type="password" name="confirmPassword" placeholder="Repite la contraseña" required />
+        <label for="subscriptionPlan">Plan de suscripción:</label>
+        <select name="subscriptionPlan" id="subscriptionPlan" class="custom-select" required>
+          <option value="basic">Básico</option>
+          <option value="standard">Estándar</option>
+          <option value="premium">Premium</option>
+        </select>
+        <button type="submit">Registrar</button>
+      </form>
+      <div class="subscripcion">
+        <p>
+          Esta página utiliza Google reCAPTCHA para garantizar que no eres un robot.
+          <br/><br/> La información recopilada por Google reCAPTCHA está sujeta a la
+          <a href="https://policies.google.com/privacy">Política de Privacidad</a>
+          y las <a href="https://policies.google.com/terms">Condiciones de servicio</a> de Google.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - Netflox</title>
+    <link rel="stylesheet" href="./css/cuenta.css" />
+    <link rel="shortcut icon" type="image/jpg" href="img/netflix-flavicon.png" />
+  </head>
+  <body>
+    <div class="contenido">
+      <nav>
+        <a href="/index">
+          <img class="logo" src="./img/logo.png" alt="Logo de Netflox" />
+        </a>
+      </nav>
+      <div class="caja">
+        <h2>Iniciar sesión</h2>
+        <form action="/login" method="POST">
+          <div class="form">
+            <label for="email">Correo electrónico</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Ingresa tu correo electrónico"
+              required
+            />
+            <label for="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              required
+            />
+          </div>
+          <button type="submit">Iniciar sesión</button>
+        </form>
+        <div class="subscripcion">
+          <p>
+            ¿Primera vez en Netflox? 
+            <span><a href="/suscribir">Suscríbete ahora.</a></span>
+          </p>
+          <p>
+            Esta página utiliza Google reCAPTCHA para garantizar que no eres un robot.
+            <br /><br />
+            La información recopilada por Google reCAPTCHA está sujeta a la 
+            <a href="https://policies.google.com/privacy" target="_blank">Política de Privacidad</a> y las 
+            <a href="https://policies.google.com/terms" target="_blank">Condiciones de servicio</a> de Google, y se utiliza para proporcionar, mantener y mejorar el servicio de reCAPTCHA, así como para fines generales de seguridad 
+            (Google no la utiliza para publicidad personalizada).
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
