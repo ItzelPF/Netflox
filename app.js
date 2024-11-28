@@ -245,3 +245,12 @@ app.listen(PORT, () => {
 
 
 
+// Ruta para obtener las películas
+app.get("/api/movies", async (req, res) => {
+  try {
+    const movies = await Movie.find();
+    res.json(movies);
+  } catch (error) {
+    res.status(500).send("Error al obtener las películas.");
+  }
+});

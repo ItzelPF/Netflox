@@ -79,143 +79,51 @@ nav .logo {
     max-width:40px;
 }
 
-
-
-/* Movies Section CSS */
-.movies-section{
-    margin: 41px 0;
-}
-.movie-section-heading{
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
-    color: white;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-.explore-nudge{
-    color: #54b9c5;
-    font-size: 12px;
-    display: none;
-}
-.movie-section-heading:hover .explore-nudge{
-    display: inline-block;
-}
-.movies-row{
+.movies-cont {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow-x:auto;
-    overflow-y: hidden;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    padding: 20px;
 }
-.movie-item{
-    width: 245px;
-    object-fit: contain;
-    margin-right: 6px;
-    border-radius: 4px;
-    position: relative;
+
+.movie {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
-.move-item-img{
-    width: inherit;
-}
-.movie-item .iframe-wrap{
-    position: absolute;
-    top: 0;
-    left: 0;
+
+.movie img {
     width: 100%;
-    height: 100%;
-    z-index: 10;
-    display: none;
-    border: none;
-    outline: none;
-}
-.movie-item:hover .iframe-wrap{
-    display: block;
-}
-.movie-item:hover{
-    transform: scale(1.3);
-    transition: transform linear 300ms;
-}
-
-
-/* Banner Section */
-.banner-section{
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 98vh;
-    padding-top: 80px;
-    position: relative;
-}
-.banner-content{
-    display: flex;
-    flex-direction: column;
-    padding-top: 70px;
-}
-.banner__title{
-    color: white;
-    font-size: 84px;
-    line-height: 1.1;
-    margin: 0;
-    margin-bottom: 16px;
-    max-width: 40%;
-}
-.banner__info{
-    margin-bottom: 14px;
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.5;
-    color: white;
-}
-.banner__overview{
-    font-size: 16.4px;
-    color: white;
-    line-height: 1.3;
-    max-width: 40%;
-}
-.action-buttons-cont{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.action-button{
-    border:none;
-    background-color: white;
-    padding: 8px 23px;
-    margin-right: 11px;
+    height: auto;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
+}
+
+.movie h3 {
     font-size: 16px;
-    font-weight: 700;
-    cursor:pointer;
-}
-.action-button:last-child{
-    background-color: rgba(109, 109, 110, 0.7);
-    color:white;
-}
-.banner_fadeBottom{
-    height: 120px;
-    background:linear-gradient(180deg,
-        transparent,
-        rgba(37,37,37,.61),
-        #141414
-    );
-    position: absolute;
-    left:0;
-    bottom: 0;
-    width: 100%;
+    margin: 10px 0;
+    color: #333;
 }
 
+.movie p {
+    font-size: 14px;
+    color: #777;
+}
 
+.movie a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #e50914;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+}
 
-/* RESPONSIVE CSS */
-@media (max-width:767px) {
-    .main-nav{
-        display: none;
-    }
-    .banner__overview, .banner__title{
-        max-width: 100%;
-    }
+.movie a:hover {
+    background-color: #b20710;
 }
