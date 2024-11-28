@@ -8,13 +8,6 @@ const movieSchema = new mongoose.Schema({
   duration: { type: Number }, // Duración en minutos (solo para películas)
   rating: { type: Number, min: 0, max: 10 },
   language: { type: String, default: "en" },
-  type: { type: String, enum: ["movie", "series"], required: true },
-  seasons: [
-    {
-      seasonNumber: Number,
-      episodes: Number,
-    },
-  ],
   thumbnail: String, // URL de la miniatura
   url: { type: String, required: true }, // URL para ver la película o serie
 });

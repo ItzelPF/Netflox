@@ -159,7 +159,7 @@ app.post("/registrar", async (req, res) => {
 
     // Guardar en la base de datos
     await newUser.save();
-    res.render("perfiles"); // Renderiza el archivo perfiles.ejs
+    res.render("cuenta"); // Renderiza el archivo cuenta.ejs
   } catch (error) {
     console.error("Error al registrar usuario:", error);
     res.status(500).send("Hubo un error al registrar el usuario.");
