@@ -246,11 +246,24 @@ app.listen(PORT, () => {
 
 
 // Ruta para obtener las películas
+// Ruta para obtener las películas (con búsqueda opcional)
 app.get("/api/movies", async (req, res) => {
   try {
-    const movies = await Movie.find();
-    res.json(movies);
+    const query = req.query.q; // Obtener el parámetro de búsqueda
+    let filter = {}; // Objeto de filtro inicial
+
+    // Si hay un término de búsqueda, filtramos las películas por título
+    if (query) {
+      filter = { title: { $regex: query, $options: 'i' } }; // Búsqueda insensible a mayúsculas y minúsculas
+    }
+
+    // Obtener las películas desde la base de datos
+    const movies = await Movie.find(filter);
+    res.json(movies); // Enviar las películas encontradas al frontend
   } catch (error) {
     res.status(500).send("Error al obtener las películas.");
   }
 });
+
+
+

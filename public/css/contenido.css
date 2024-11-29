@@ -23,7 +23,7 @@ html, body {
 
 /* Header Styles */
 header {
-    background-color: transparent;
+    background-color: #141414d0;
     position: fixed;
     z-index: 100;
     top: 0;
@@ -38,7 +38,7 @@ header {
 }
 
 header.black-bg {
-    background-color: rgb(20, 20, 20); /* Cambia el color al hacer scroll */
+    background-color: rgb(231, 144, 144); /* Cambia el color al hacer scroll */
 }
 
 /* Header Container */
@@ -187,4 +187,76 @@ body {
 
 .movie a:hover {
     background-color: #b20710;
+}
+
+/* cerra sesion */
+.hidden {
+    display: none;
+}
+
+.dropdown {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown ul li {
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.dropdown ul li:hover {
+    background-color: red;
+}
+
+
+/* Campo de búsqueda */
+.search-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    width: 200px;
+}
+
+.search-icon {
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* Contenedor de películas */
+.movies-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.movie {
+    width: 200px;
+    text-align: center;
+    display: inline-block;
+}
+
+.movie img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.movie h3 {
+    margin-top: 10px;
 }
