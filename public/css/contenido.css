@@ -1,0 +1,190 @@
+/* Normalize CSS */
+html, body {
+    background-color: #141414;
+    color: #e5e5e5;
+    padding: 0;
+    margin: 0;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+/* Header Styles */
+header {
+    background-color: transparent;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: background-color 0.5s ease;
+    height: 60px; /* Altura estándar del header */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+header.black-bg {
+    background-color: rgb(20, 20, 20); /* Cambia el color al hacer scroll */
+}
+
+/* Header Container */
+.header-cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Left Content: Logo y Nav */
+.left-cont {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav .logo {
+    width: 120px;
+    cursor: pointer;
+}
+
+.main-nav {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-item {
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.85;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item.active,
+.nav-item:hover {
+    opacity: 1;
+    font-weight: 500;
+}
+
+.nav-item a {
+    color: #e5e5e5;
+    text-decoration: none;
+}
+
+/* Right Content: Icons y Avatar */
+.right-cont {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.right-cont svg {
+    cursor: pointer;
+    fill: #e5e5e5;
+    transition: fill 0.3s ease;
+}
+
+.right-cont svg:hover {
+    fill: #fff;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10%;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+/* Movies Container */
+.movies-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 100px 20px 20px; /* Espaciado para evitar que lo tape el header */
+}
+
+/* Efecto Scroll para Header */
+body {
+    padding-top: 60px; /* Espacio para el header fijo */
+}
+
+/* Movies Section */
+.movies-cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 100px 20px 20px; /* To account for the fixed header */
+}
+
+.movie {
+    width: 200px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #222;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.movie img {
+    width: 100%;
+    border-bottom: 1px solid #333;
+    border-radius: 8px 8px 0 0;
+}
+
+.movie h3 {
+    font-size: 18px;
+    margin: 10px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.movie p {
+    font-size: 14px;
+    margin: 0 10px 10px;
+    color: #aaa;
+    text-align: center;
+}
+
+.movie a {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #e50914;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.movie a:hover {
+    background-color: #b20710;
+}
