@@ -61,10 +61,6 @@ app.get("/suscribir", (req, res) => {
     res.render("suscribir"); // Renderiza el archivo suscribir.ejs
 });
 
-app.get("/contenido", (req, res) => {
-  res.render("contenido"); // Renderiza el archivo contenido.ejs
-});
-
 app.get("/anadirPerfil/:userId", (req, res) => {
   const { userId } = req.params;
   res.render("anadirPerfil", { userId }); // Renderiza el archivo añadirperfiles.ejs
@@ -238,6 +234,47 @@ app.get("/contenido/:userId/:profileId", async (req, res) => {
   }
 });
 
+app.get('/generos/:userId/:profileId', async (req, res) => {
+  const { userId, profileId } = req.params;
+
+  try {
+      // Verificar usuario y perfil (si usas esa lógica en tu sistema)
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).send("Usuario no encontrado.");
+
+      const profile = user.profiles.id(profileId);
+      if (!profile) return res.status(404).send("Perfil no encontrado.");
+
+      // Obtener las películas organizadas por género
+      const movies = await Movie.aggregate([
+          { $unwind: "$genres" }, // Desglosa cada género individualmente
+          {
+              $group: {
+                  _id: "$genres", // Agrupa por género
+                  movies: {
+                      $push: {
+                          title: "$title",
+                          description: "$description",
+                          releaseYear: "$releaseYear",
+                          duration: "$duration",
+                          thumbnail: "$thumbnail",
+                          url: "$url"
+                      }
+                  }
+              }
+          },
+          { $sort: { _id: 1 } } // Ordena alfabéticamente por género
+      ]);
+
+      // Renderizar la vista y pasar los datos
+      res.render('generos', { userId, profileId, avatar: profile.avatar, movies });
+  } catch (error) {
+      console.error("Error al obtener las películas:", error);
+      res.status(500).send("Error interno del servidor.");
+  }
+});
+
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
@@ -265,5 +302,13 @@ app.get("/api/movies", async (req, res) => {
   }
 });
 
-
-
+app.get('/api/movies/genre', async (req, res) => {
+  const genre = req.query.q;
+  try {
+      const movies = await Movie.find({ genres: genre }); // Cambié "genre" por "genres"
+      res.json(movies);
+  } catch (error) {
+      console.error("Error al obtener las películas por género:", error);
+      res.status(500).json({ message: "Error al obtener las películas" });
+  }
+});

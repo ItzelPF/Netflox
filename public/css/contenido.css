@@ -1,4 +1,3 @@
-/* Normalize CSS */
 html, body {
     background-color: #141414;
     color: #e5e5e5;
@@ -112,27 +111,9 @@ nav .logo {
     cursor: pointer;
 }
 
-/* Movies Container */
-.movies-cont {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-    padding: 100px 20px 20px; /* Espaciado para evitar que lo tape el header */
-}
-
 /* Efecto Scroll para Header */
 body {
     padding-top: 60px; /* Espacio para el header fijo */
-}
-
-/* Movies Section */
-.movies-cont {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-    padding: 100px 20px 20px; /* To account for the fixed header */
 }
 
 .movie {
@@ -198,7 +179,7 @@ body {
     position: absolute;
     top: 50px;
     right: 10px;
-    background-color: #333;
+    background-color: #141414;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -219,6 +200,8 @@ body {
 
 .dropdown ul li:hover {
     background-color: red;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 
@@ -242,7 +225,7 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 40px;    
 }
 
 .movie {
@@ -260,3 +243,27 @@ body {
 .movie h3 {
     margin-top: 10px;
 }
+
+/* Generos */
+.genre-block {
+    width: 90%; /* Opcional: ajusta el ancho si quieres que ocupen menos espacio */
+    margin-bottom: 40px;
+}
+
+.genre-block h1 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 20px;
+    margin-left: 60px;
+}
+.movies-list {
+    display: flex;          /* Coloca las tarjetas en línea horizontalmente */
+    flex-wrap: wrap;        /* Permite que las tarjetas se ajusten en varias filas */
+    gap: 20px;              /* Espaciado uniforme entre las tarjetas */
+    justify-content: center; /* Centra las tarjetas en el contenedor */
+}
+
+
+
+
+

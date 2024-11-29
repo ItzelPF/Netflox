@@ -91,3 +91,25 @@ document.addEventListener("DOMContentLoaded", function () {
     // Cargar todas las películas al inicio cuando la página se carga
     fetchAllMovies();
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const avatar = document.getElementById("avatar");
+    const dropdown = document.getElementById("dropdown");
+
+    avatar.addEventListener("click", () => {
+        // Alterna la clase 'hidden' en el dropdown
+        dropdown.classList.toggle("hidden");
+    });
+
+    // Redirigir a /index cuando se selecciona "Cerrar sesión"
+    logout.addEventListener("click", () => {
+        window.location.href = "/index"; // Redirige a la página de inicio
+    });
+
+    // Opcional: Ocultar el menú si se hace clic fuera de él
+    document.addEventListener("click", (event) => {
+        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add("hidden");
+        }
+    });
+});
