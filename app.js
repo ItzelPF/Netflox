@@ -317,10 +317,6 @@ app.use(express.json());  // Esto es necesario para acceder a req.body
 app.post("/mi_lista/:userId/:profileId", async (req, res) => {
   const { userId, profileId } = req.params;
   const { movieId } = req.body;
-
-  console.log("movieId recibido:", movieId);  // Verifica si movieId está presente en el cuerpo
-  console.log("userId:", userId, "profileId:", profileId);
-
   // Validar si userId y profileId son ObjectId válidos
   if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(profileId)) {
       return res.status(400).json({ message: "userId o profileId no son válidos" });
@@ -345,11 +341,53 @@ app.post("/mi_lista/:userId/:profileId", async (req, res) => {
 
       profile.my_list.push({ movieId: movie._id });
       await user.save();
+      res.status(200).json({ message: "Película agregada de la lista." });
   } catch (error) {
       console.error("Error al agregar película:", error);
       res.status(500).json({ message: "Error del servidor." });
   }
 });
+
+app.get("/mi_lista/:userId/:profileId/exists/:movieId", async (req, res) => {
+  const { userId, profileId, movieId } = req.params;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ exists: false });
+
+      const profile = user.profiles.id(profileId);
+      if (!profile) return res.status(404).json({ exists: false });
+
+      const exists = profile.my_list.some((item) => item.movieId.equals(movieId));
+      res.json({ exists });
+  } catch (error) {
+      console.error("Error al verificar si la película está en la lista:", error);
+      res.status(500).json({ exists: false });
+  }
+});
+
+app.delete("/mi_lista/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+  const { movieId } = req.body;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ message: "Usuario no encontrado." });
+
+      const profile = user.profiles.id(profileId);
+      if (!profile) return res.status(404).json({ message: "Perfil no encontrado." });
+
+      // Eliminar la película de la lista
+      profile.my_list = profile.my_list.filter((item) => !item.movieId.equals(movieId));
+      await user.save();
+
+      res.status(200).json({ message: "Película eliminada de la lista." });
+  } catch (error) {
+      console.error("Error al eliminar película:", error);
+      res.status(500).json({ message: "Error del servidor." });
+  }
+});
+
 
 
 app.get("/mi_lista/:userId/:profileId", async (req, res) => {

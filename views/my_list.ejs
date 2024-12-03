@@ -13,11 +13,12 @@
         <div id="movies-cont" class="movies-cont">
             <% if (movies.length > 0) { %>
                 <% movies.forEach(movie => { %>
-                    <div class="movie">
+                    <div class="movie" data-movie-id="<%= movie._id %>">
                         <img src="<%= movie.thumbnail || '/img/default-thumbnail.jpg' %>" alt="<%= movie.title %>">
                         <h3><%= movie.title %></h3>
                         <p><%= movie.description %></p>
                         <a href="<%= movie.url %>">Ver ahora</a>
+                        <button class="remove-from-list-btn" data-movie-id="<%= movie._id %>">-</button>
                     </div>
                 <% }); %>
             <% } else { %>
@@ -25,5 +26,7 @@
             <% } %>
         </div>
     </div>
+    <script src="/js/my_list.js"></script>
 </body>
 </html>
+
