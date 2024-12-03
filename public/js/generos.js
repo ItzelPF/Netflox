@@ -1,6 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const moviesCont = document.getElementById("movies-cont");
+    const searchQuery = document.getElementById("search-query");
+
     const genreButtons = document.querySelectorAll(".genre-btn");
     const avatar = document.getElementById("avatar");
     const dropdown = document.getElementById("dropdown");
@@ -84,6 +86,22 @@ document.addEventListener("DOMContentLoaded", function () {
             fetchMoviesByGenre(genre);
         });
     });
+  // Manejar la búsqueda en tiempo real
+  searchQuery.addEventListener("input", function () {
+    const query = searchQuery.value.toLowerCase().trim();
+    const movies = moviesCont.querySelectorAll(".movie");
 
+    movies.forEach(movie => {
+        const title = movie.querySelector("h3").textContent.toLowerCase();
+        const description = movie.querySelector("p").textContent.toLowerCase();
+
+        // Mostrar u ocultar la película según coincida con el título o descripción
+        if (title.includes(query) || description.includes(query)) {
+            movie.style.display = ""; // Mostrar
+        } else {
+            movie.style.display = "none"; // Ocultar
+        }
+    });
+});
 
 });

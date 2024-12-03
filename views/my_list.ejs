@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Lista - Netflox</title>
     <link rel="stylesheet" href="/css/contenido.css">
+    <script src="/js/my_list.js" defer></script>
+
 </head>
 <body>
     <%- include('header') %>
-    <div id="movies-cont" class="movies-cont container">
         <h1>Mi Lista</h1>
         <div id="movies-cont" class="movies-cont">
             <% if (movies.length > 0) { %>
@@ -24,9 +25,10 @@
             <% } else { %>
                 <p>No tienes películas en tu lista.</p>
             <% } %>
+            <div id="movies-cont" class="movies-cont container"></div>
+
         </div>
     </div>
-    <script src="/js/my_list.js"></script>
 </body>
 </html>
 

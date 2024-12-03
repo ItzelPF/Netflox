@@ -1,6 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
     const moviesCont = document.getElementById("movies-cont");
     const searchQuery = document.getElementById("search-query");
+    const avatar = document.getElementById("avatar");
+    const dropdown = document.getElementById("dropdown");
+    const logout = document.getElementById("logout"); // Asegúrate de obtener el botón de logout
+
+    // Evento para cerrar sesión
+    logout.addEventListener("click", () => {
+        window.location.href = "/index"; // Redirige a la página de inicio
+    });
+
+    // Evento para mostrar/ocultar el menú del avatar
+    avatar.addEventListener("click", () => {
+        dropdown.classList.toggle("hidden"); // Alterna la visibilidad del dropdown
+    });
+
+    // Ocultar el menú si se hace clic fuera del dropdown
+    document.addEventListener("click", (event) => {
+        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add("hidden"); // Añadir la clase 'hidden' si se hace clic fuera
+        }
+    });
 
     // Función para obtener todas las películas desde el servidor
     async function fetchAllMovies() {
