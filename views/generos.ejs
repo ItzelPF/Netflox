@@ -9,32 +9,7 @@
     <script src="/js/generos.js" defer></script>
 </head>
 <body>
-    <header id="header">
-        <div class="header-cont container">
-            <div class="left-cont">
-                <nav>
-                    <a href="/index"><img class="logo" src="/img/logo.png" alt="netfloxLogo" /></a>
-                </nav>
-                <ul class="main-nav">
-                    <li class="nav-item active"><a href="/contenido/<%= userId %>/<%= profileId %>">Inicio</a></li>
-                    <li class="nav-item"><a href="#">Géneros</a></li>
-                    <li class="nav-item"><a href="#">Mi lista</a></li>
-                </ul>
-            </div>
-            <div class="right-cont">
-                <!-- Ícono de avatar -->
-                <img src="<%= avatar %>" alt="Avatar del perfil" class="profile-avatar" id="avatar">
-
-                <!-- Menú desplegable del avatar -->
-                <div id="dropdown" class="dropdown hidden">
-                    <ul>
-                        <li id="logout">Cerrar sesión</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-
+  <%- include('header') %>
     <div id="movies-cont" class="movies-cont">
         <% if (movies && movies.length > 0) { %>
           <% movies.forEach(genre => { %>
@@ -56,7 +31,5 @@
           <p>No hay películas para mostrar.</p>
         <% } %>
       </div>
-      
-
 </body>
 </html>

@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
             // Limpiar el contenedor de películas
             moviesCont.innerHTML = "";
 
+            // Si no hay resultados
+            if (movies.length === 0) {
+                moviesCont.innerHTML = "<p>No se encontraron películas.</p>";
+                return;
+            }
+
             // Mostrar las películas filtradas
             movies.forEach(movie => {
                 const movieElement = createMovieCard(movie);
@@ -66,14 +72,60 @@ document.addEventListener("DOMContentLoaded", function () {
         movieLink.href = movie.url;
         movieLink.textContent = "Ver ahora";
 
+        // Crear el botón de agregar a la lista
+        const addToListBtn = document.createElement("button");
+        addToListBtn.classList.add("add-to-list-btn");
+        addToListBtn.textContent = "+";
+
+        addToListBtn.addEventListener("click", () => {
+            if (movie._id) {
+                console.log("Enviando movieId:", movie._id);  // Verifica que el movieId esté correctamente
+                addToList(movie._id);
+            } else {
+                console.error("Error: movie._id no está definido.");
+                alert("No se pudo agregar la película, el ID es inválido.");
+            }
+        });
+
         // Añadir los elementos al contenedor de la película
         movieDiv.appendChild(movieThumbnail);
         movieDiv.appendChild(movieTitle);
         movieDiv.appendChild(movieDescription);
         movieDiv.appendChild(movieLink);
+        movieDiv.appendChild(addToListBtn);
 
         return movieDiv;
     }
+
+    // Función para agregar la película a la lista
+    async function addToList(movieId) {
+        const pathSegments = window.location.pathname.split('/');
+        const userId = pathSegments[2]; 
+        const profileId = pathSegments[3]; 
+    
+        console.log("Cuerpo de la solicitud:", { movieId }); // Verifica el cuerpo antes de enviarlo
+    
+        try {
+            const response = await fetch(`/mi_lista/${userId}/${profileId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ movieId }), // Asegúrate de que esto esté correcto
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message);
+            } else {
+                alert(`Error: ${data.message}`);
+            }
+        } catch (error) {
+            console.error("Error al agregar a la lista:", error);
+            alert("Ocurrió un error al agregar la película.");
+        }
+    }
+    
 
     // Evento para manejar la búsqueda
     searchQuery.addEventListener("input", function () {
@@ -90,26 +142,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Cargar todas las películas al inicio cuando la página se carga
     fetchAllMovies();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const avatar = document.getElementById("avatar");
-    const dropdown = document.getElementById("dropdown");
-
-    avatar.addEventListener("click", () => {
-        // Alterna la clase 'hidden' en el dropdown
-        dropdown.classList.toggle("hidden");
-    });
-
-    // Redirigir a /index cuando se selecciona "Cerrar sesión"
-    logout.addEventListener("click", () => {
-        window.location.href = "/index"; // Redirige a la página de inicio
-    });
-
-    // Opcional: Ocultar el menú si se hace clic fuera de él
-    document.addEventListener("click", (event) => {
-        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.classList.add("hidden");
-        }
-    });
 });

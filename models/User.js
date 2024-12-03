@@ -6,10 +6,22 @@ const profileSchema = new mongoose.Schema({
   watched: [
     {
       movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
-      progress: { type: Number, default: 0 }, // Progreso en porcentaje
       lastWatched: { type: Date },
     },
   ],
+  my_list: [
+    {
+      movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
+    },
+  ],
+});
+
+// Agregar un valor por defecto para 'my_list' para evitar el error de undefined
+profileSchema.pre('save', function (next) {
+  if (!this.my_list) {
+    this.my_list = []; // Asegura que 'my_list' sea siempre un arreglo vacío si no tiene valor
+  }
+  next();
 });
 
 const userSchema = new mongoose.Schema({

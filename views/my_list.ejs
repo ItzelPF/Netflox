@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Lista - Netflox</title>
+    <link rel="stylesheet" href="/css/contenido.css">
+</head>
+<body>
+    <%- include('header') %>
+    <div id="movies-cont" class="movies-cont container">
+        <h1>Mi Lista</h1>
+        <div id="movies-cont" class="movies-cont">
+            <% if (movies.length > 0) { %>
+                <% movies.forEach(movie => { %>
+                    <div class="movie">
+                        <img src="<%= movie.thumbnail || '/img/default-thumbnail.jpg' %>" alt="<%= movie.title %>">
+                        <h3><%= movie.title %></h3>
+                        <p><%= movie.description %></p>
+                        <a href="<%= movie.url %>">Ver ahora</a>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No tienes películas en tu lista.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 
-
 // Modelos
 const Movie = require("./models/Movies");
 const User = require("./models/User");
@@ -283,7 +282,6 @@ app.listen(PORT, () => {
 
 
 // Ruta para obtener las películas
-// Ruta para obtener las películas (con búsqueda opcional)
 app.get("/api/movies", async (req, res) => {
   try {
     const query = req.query.q; // Obtener el parámetro de búsqueda
@@ -312,3 +310,72 @@ app.get('/api/movies/genre', async (req, res) => {
       res.status(500).json({ message: "Error al obtener las películas" });
   }
 });
+
+// Mi lista
+app.use(express.json());  // Esto es necesario para acceder a req.body
+
+app.post("/mi_lista/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+  const { movieId } = req.body;
+
+  console.log("movieId recibido:", movieId);  // Verifica si movieId está presente en el cuerpo
+  console.log("userId:", userId, "profileId:", profileId);
+
+  // Validar si userId y profileId son ObjectId válidos
+  if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(profileId)) {
+      return res.status(400).json({ message: "userId o profileId no son válidos" });
+  }
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ message: "Usuario no encontrado." });
+
+      const profile = user.profiles.id(profileId);
+      if (!profile) return res.status(404).json({ message: "Perfil no encontrado." });
+
+      const movie = await Movie.findById(movieId);
+      if (!movie) {
+          return res.status(404).json({ message: `Película con ID ${movieId} no encontrada.` });
+      }
+
+      const alreadyExists = profile.my_list.some((item) => item.movieId.equals(movie._id));
+      if (alreadyExists) {
+          return res.status(400).json({ message: `La película "${movie.title}" ya está en la lista.` });
+      }
+
+      profile.my_list.push({ movieId: movie._id });
+      await user.save();
+  } catch (error) {
+      console.error("Error al agregar película:", error);
+      res.status(500).json({ message: "Error del servidor." });
+  }
+});
+
+
+app.get("/mi_lista/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+
+  try {
+    // Buscar al usuario y su perfil
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    const profile = user.profiles.id(profileId);
+    if (!profile) {
+      return res.status(404).json({ message: "Perfil no encontrado." });
+    }
+
+    // Obtener las películas de la lista de ese perfil usando los movieId
+    const movieIds = profile.my_list.map(item => item.movieId);
+    const movies = await Movie.find({ _id: { $in: movieIds } });
+
+    // Renderizar la vista y pasar las películas a mostrar
+    res.render('my_list', { userId, profileId, avatar: profile.avatar, movies });
+  } catch (error) {
+    console.error("Error al obtener la lista:", error);
+    res.status(500).json({ message: "Error del servidor." });
+  }
+});
+
