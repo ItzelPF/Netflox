@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 if (response.ok) {
+                    console.log("Perfil eliminado con éxito.");
                     window.location.href = "/index"; // Redirige después de eliminar el perfil
                 } else {
                     const errorData = await response.json();

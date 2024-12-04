@@ -6,8 +6,7 @@ const mongoose = require("mongoose");
 const Movie = require("./models/Movies");
 const User = require("./models/User");
 const Vista = require("./models/Vista");
-const Recommendation = require("./models/Recommendation");
-const Payments = require("./models/Payments");
+
 const Profile = require("./models/User");
 
 // Configuración del servidor
@@ -115,22 +114,21 @@ app.delete("/deleteProfile/:userId/:profileId", async (req, res) => {
           return res.status(404).json({ message: "Usuario no encontrado" });
       }
 
-      // Buscar el perfil dentro del usuario
       const profileIndex = user.profiles.findIndex(profile => profile._id.toString() === profileId);
       if (profileIndex === -1) {
           return res.status(404).json({ message: "Perfil no encontrado" });
       }
 
-      // Eliminar el perfil del array
-      user.profiles.splice(profileIndex, 1); // Elimina el perfil en el índice encontrado
-
-      // Guardar los cambios
+      user.profiles.splice(profileIndex, 1);
       await user.save();
+
+      res.status(200).json({ message: "Perfil eliminado exitosamente" });
   } catch (err) {
       console.error("Error al eliminar el perfil:", err);
       res.status(500).json({ message: "Error al eliminar el perfil" });
   }
 });
+
 
 // Ruta para modificar el perfil
 app.get('/modificarPerfil/:userId/:profileId', async (req, res) => {
