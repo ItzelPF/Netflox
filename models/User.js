@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const profileSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Nombre del perfil
   avatar: { type: String, default: "default_avatar.png" }, // Avatar del perfil
-  watched: [
+  history: [
     {
       movieId: { type: mongoose.Schema.Types.ObjectId, ref: "Movie" },
       lastWatched: { type: Date },

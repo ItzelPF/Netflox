@@ -146,33 +146,63 @@ document.addEventListener("DOMContentLoaded", function () {
         movieLink.href = movie.url;
         movieLink.textContent = "Ver ahora";
 
-        const addToListBtn = document.createElement("button");
-        addToListBtn.classList.add("add-to-list-btn");
+        // Evento para ver la película y agregarla al historial
+        movieLink.addEventListener("click", async (event) => {
+            event.preventDefault(); // Prevenir la acción de redirección inmediata
 
-        isInList(movie._id).then((exists) => {
-            addToListBtn.textContent = exists ? "-" : "+";
+            // Agregar la película al historial
+            const userId = window.location.pathname.split('/')[2];
+            const profileId = window.location.pathname.split('/')[3];
 
-            addToListBtn.addEventListener("click", async () => {
-                if (exists) {
-                    await removeFromList(movie._id);
-                    addToListBtn.textContent = "+";
-                    exists = false;
+            try {
+                const response = await fetch(`/historial/${userId}/${profileId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ movieId: movie._id, lastWatched: new Date() }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    // Si la película se agregó correctamente al historial, redirigimos a la página de la película
+                    window.location.href = movie.url;
                 } else {
-                    await addToList(movie._id);
-                    addToListBtn.textContent = "-";
-                    exists = true;
+                    alert(`Error: ${data.message}`);
                 }
-            });
+            } catch (error) {
+                console.error("Error al agregar al historial:", error);
+                alert("Ocurrió un error al agregar la película al historial.");
+            }
+    });
+
+    const addToListBtn = document.createElement("button");
+    addToListBtn.classList.add("add-to-list-btn");
+
+    isInList(movie._id).then((exists) => {
+        addToListBtn.textContent = exists ? "-" : "+";
+
+        addToListBtn.addEventListener("click", async () => {
+            if (exists) {
+                await removeFromList(movie._id);
+                addToListBtn.textContent = "+";
+                exists = false;
+            } else {
+                await addToList(movie._id);
+                addToListBtn.textContent = "-";
+                exists = true;
+            }
         });
+    });
 
-        movieDiv.appendChild(movieThumbnail);
-        movieDiv.appendChild(movieTitle);
-        movieDiv.appendChild(movieDescription);
-        movieDiv.appendChild(movieLink);
-        movieDiv.appendChild(addToListBtn);
+    movieDiv.appendChild(movieThumbnail);
+    movieDiv.appendChild(movieTitle);
+    movieDiv.appendChild(movieDescription);
+    movieDiv.appendChild(movieLink);
+    movieDiv.appendChild(addToListBtn);
 
-        return movieDiv;
-    }
+    return movieDiv;
+}
 
     // Función para agregar la película a la lista
     async function addToList(movieId) {

@@ -507,3 +507,75 @@ app.get("/mi_lista/:userId/:profileId", async (req, res) => {
   }
 });
 
+
+app.get("/historial/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+
+  try {
+    // Buscar al usuario y su perfil
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    const profile = user.profiles.id(profileId);
+    if (!profile) {
+      return res.status(404).json({ message: "Perfil no encontrado." });
+    }
+
+    // Obtener las películas del historial de ese perfil usando los movieId
+    const movieIds = profile.history.map(item => item.movieId);
+    const movies = await Movie.find({ _id: { $in: movieIds } });
+
+    // Pasar el perfil completo y las películas a la vista
+    res.render('historial', { 
+      userId, 
+      profileId, 
+      avatar: profile.avatar, 
+      profile,  // Pasamos el perfil completo
+      movies 
+    });
+    
+  } catch (error) {
+    console.error("Error al obtener el historial:", error);
+    res.status(500).json({ message: "Error del servidor." });
+  }
+});
+
+
+app.post("/historial/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+  const { movieId, lastWatched } = req.body;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: "Usuario no encontrado." });
+      }
+
+      const profile = user.profiles.id(profileId);
+      if (!profile) {
+          return res.status(404).json({ message: "Perfil no encontrado." });
+      }
+
+      // Verificar si la película ya está en el historial
+      const existingMovie = profile.history.find(item => item.movieId.toString() === movieId);
+
+      if (existingMovie) {
+          // Si ya está en el historial, actualizar la fecha de la última visualización
+          existingMovie.lastWatched = lastWatched;
+      } else {
+          // Si no está en el historial, agregarla
+          profile.history.push({ movieId, lastWatched });
+      }
+
+      await user.save();
+      res.json({ message: "Película agregada al historial." });
+  } catch (error) {
+      console.error("Error al agregar al historial:", error);
+      res.status(500).json({ message: "Error al agregar al historial." });
+  }
+});
+
+
+

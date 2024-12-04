@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflox - Historial</title>
+    <link rel="shortcut icon" href="img/netflix-flavicon.png" type="image/jpg">
+    <link rel="stylesheet" href="/css/contenido.css">
+    <script src="/js/historial.js" defer></script>
+</head>
+<body>
+    <%- include('header') %>
+
+    <div class="container">
+        <h1 class="titulo">Historial de Vistas</h1>
+        <div id="movies-cont" class="movies-cont">
+            <% if (movies && movies.length > 0) { %>
+                <% movies.forEach(movie => { %>
+                    <div class="movie">
+                        <img src="<%= movie.thumbnail %>" alt="<%= movie.title %>">
+                        <h3><%= movie.title %></h3>
+                        <p><%= movie.description %></p>
+                        <p><strong>Última vista:</strong> 
+                            <% 
+                            const movieHistory = profile?.history?.find(item => item.movieId.toString() === movie._id.toString());
+                            if (movieHistory) { 
+                                let lastWatchedDate = movieHistory?.lastWatched 
+                                    ? new Date(movieHistory.lastWatched).toLocaleDateString() 
+                                    : 'Fecha no disponible';
+                            %>
+                                <%= lastWatchedDate %>
+                            <% } else { %>
+                                <%= 'Nunca visto' %>
+                            <% } %>
+                        </p>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No hay películas en tu historial.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
