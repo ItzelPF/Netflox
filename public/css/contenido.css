@@ -190,12 +190,14 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
+    
 }
 
 .dropdown ul li {
     padding: 10px;
     cursor: pointer;
     text-align: center;
+    border-bottom: 1px solid #ccc;
 }
 
 .dropdown ul li:hover {
@@ -265,9 +267,11 @@ body {
 
 
 /* Mi lista */
-.movies-cont h1 {
-    font-size: 24px;
+.titulo {
+    font-size: 30px;
     color: hsl(0, 0%, 100%);
+    margin-bottom: 20px;
+    text-align: center;
 }
 .add-to-list-btn {
     background-color: #e50914;

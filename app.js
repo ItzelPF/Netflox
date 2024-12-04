@@ -105,6 +105,64 @@ app.post('/anadirPerfil/:userId', async (req, res) => {
   }
 });
 
+// Ruta para eliminar el perfil
+app.delete("/deleteProfile/:userId/:profileId", async (req, res) => {
+  const { userId, profileId } = req.params;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      // Buscar el perfil dentro del usuario
+      const profileIndex = user.profiles.findIndex(profile => profile._id.toString() === profileId);
+      if (profileIndex === -1) {
+          return res.status(404).json({ message: "Perfil no encontrado" });
+      }
+
+      // Eliminar el perfil del array
+      user.profiles.splice(profileIndex, 1); // Elimina el perfil en el índice encontrado
+
+      // Guardar los cambios
+      await user.save();
+  } catch (err) {
+      console.error("Error al eliminar el perfil:", err);
+      res.status(500).json({ message: "Error al eliminar el perfil" });
+  }
+});
+
+// Ruta para modificar el perfil
+app.get('/modificarPerfil/:userId/:profileId', async (req, res) => {
+  const { userId, profileId } = req.params;
+
+  try {
+    // Buscar el usuario por su userId
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Buscar el perfil dentro del arreglo 'profiles' del usuario
+    const perfil = user.profiles.id(profileId);
+
+    if (!perfil) {
+      return res.status(404).send('Perfil no encontrado');
+    }
+
+    // Pasar los datos a la vista EJS
+    res.render('modificarPerfil', {
+      userId,
+      profileId,
+      nombre: perfil.name, // Acceder al campo 'name' en lugar de 'nombre'
+      avatar: perfil.avatar
+    });
+  } catch (error) {
+    console.error('Error al obtener el perfil:', error);
+    res.status(500).send('Error al obtener el perfil');
+  }
+});
 
 app.get("/perfiles/:userId", async (req, res) => {
   const { userId } = req.params;
@@ -126,6 +184,40 @@ app.get("/perfiles/:userId", async (req, res) => {
   } catch (error) {
     console.error("Error fetching profiles:", error);
     res.status(500).json({ message: "Error fetching profiles", error });
+  }
+});
+
+app.post('/modificarPerfil/:userId/:profileId', async (req, res) => {
+  const { userId, profileId } = req.params;
+  const { name, avatar } = req.body; // Suponiendo que los datos se envían en el cuerpo de la solicitud
+
+  try {
+    // Buscar el usuario por su userId
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Buscar el perfil dentro del arreglo 'profiles' del usuario
+    const perfil = user.profiles.id(profileId);
+
+    if (!perfil) {
+      return res.status(404).send('Perfil no encontrado');
+    }
+
+    // Actualizar los datos del perfil
+    perfil.name = name || perfil.name; // Si no se proporciona un nuevo nombre, se mantiene el actual
+    perfil.avatar = avatar || perfil.avatar; // Lo mismo para el avatar
+
+    // Guardar los cambios en la base de datos
+    await user.save();
+
+    // Redirigir a la página de perfiles del usuario
+    res.redirect(`/perfiles/${userId}`);
+  } catch (error) {
+    console.error('Error al modificar el perfil:', error);
+    res.status(500).send('Error al modificar el perfil');
   }
 });
 

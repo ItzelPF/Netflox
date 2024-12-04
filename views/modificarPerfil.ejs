@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/cuenta.css" />
+</head>
+<body>
+  <div class="contenido">
+    <nav>
+      <a href="/index">
+        <img class="logo" src="/img/logo.png" alt="Logo de Netflox" />
+      </a>
+    </nav>
+
+    <div class="caja">
+      <h2>Modificar Perfil</h2>
+      <form method="POST" class="form" id="modifyProfileForm">
+        <!-- Nombre del perfil prellenado con el valor de 'nombre' -->
+        <input type="text" name="name" value="<%= nombre %>" placeholder="Nombre del perfil" required>
+
+        <div class="avatar-preview">
+          <img id="avatarPreview" src="<%= avatar %>" alt="Avatar Preview" />
+        </div>
+
+        <!-- Selección del avatar con el avatar preseleccionado -->
+        <select name="avatar" class="custom-select" onchange="updateAvatarPreview(this)">
+          <option value="/img/perfil1.jpg" <%= avatar === '/img/perfil1.jpg' ? 'selected' : '' %>>Avatar 1 🔴</option>
+          <option value="/img/perfil2.jpg" <%= avatar === '/img/perfil2.jpg' ? 'selected' : '' %>>Avatar 2 🔵</option>
+          <option value="/img/perfil3.jpg" <%= avatar === '/img/perfil3.jpg' ? 'selected' : '' %>>Avatar 3 🟡</option>
+          <option value="/img/perfil4.jpg" <%= avatar === '/img/perfil4.jpg' ? 'selected' : '' %>>Avatar 4 🟢</option>
+          <option value="/img/perfil5.jpg" <%= avatar === '/img/perfil5.jpg' ? 'selected' : '' %>>Avatar 5 🟣</option>
+        </select>
+
+        <button type="submit">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>¿Preguntas? Llama al <a href="">449</a></p>
+  </footer>
+
+  <script>
+    // Función para actualizar la vista previa del avatar seleccionado
+    function updateAvatarPreview(selectElement) {
+      const preview = document.getElementById("avatarPreview");
+      preview.src = selectElement.value;
+    }
+
+    // Función para obtener los parámetros userId y profileId desde la URL
+    function getParamsFromURL() {
+      const path = window.location.pathname; // Obtiene el path de la URL
+      const segments = path.split('/'); // Divide el path en segmentos
+      return {
+        userId: segments[segments.length - 2], // El ID del usuario está en el penúltimo segmento
+        profileId: segments[segments.length - 1] // El ID del perfil está en el último segmento
+      };
+    }
+
+    // Modificar dinámicamente el atributo action del formulario
+    document.addEventListener("DOMContentLoaded", () => {
+      const { userId, profileId } = getParamsFromURL(); // Extrae los IDs desde la URL
+      const form = document.querySelector("#modifyProfileForm"); // Selecciona el formulario
+
+      if (userId && profileId && form) {
+        form.action = `/modificarPerfil/${userId}/${profileId}`; // Modifica el atributo action del formulario
+      }
+    });
+  </script>
+</body>
+</html>
