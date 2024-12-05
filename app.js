@@ -1,12 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-
 // Modelos
 const Movie = require("./models/Movies");
 const User = require("./models/User");
 const Vista = require("./models/Vista");
-
 const Profile = require("./models/User");
 
 // Configuración del servidor
@@ -19,32 +17,32 @@ app.use(express.static("public")); // Archivos estáticos (CSS, JS)
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views"); // Asegúrate de que el directorio de vistas esté configurado correctamente
 
-// Conexión a MongoDB
+// Conexión a MongoDB Atlas
 mongoose
-  .connect("mongodb://localhost:27017/Netflox", {
+  .connect("mongodb+srv://al332150:Servicio123@netflox.certl.mongodb.net/", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Conectado a MongoDB"))
-  .catch((error) => console.error("Error al conectar a MongoDB:", error));
+  .then(() => console.log("Conectado a MongoDB Atlas"))
+  .catch((error) => console.error("Error al conectar a MongoDB Atlas:", error));
 
-// Esquema y modelo para ejemplo
-const ItemSchema = new mongoose.Schema({
-  name: String,
+// Inicia el servidor
+app.listen(PORT, () => {
+  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
 });
-const Item = mongoose.model("Item", ItemSchema);
 
 
 
 // Rutas a páginas
 app.get("/", async (req, res) => {
   try {
-    const items = await Item.find();
-    res.render("index", { items }); //principal
+    const movies = await Movie.find();
+    res.render("index"); //principal
   } catch (error) {
     res.status(500).send("Error al obtener los datos");
   }
 });
+
 
 app.get("/index", (req, res) => {
   res.render("index"); // Renderiza el archivo index.ejs
@@ -362,14 +360,6 @@ app.get('/generos/:userId/:profileId', async (req, res) => {
       res.status(500).send("Error interno del servidor.");
   }
 });
-
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
-
-
 
 // Ruta para obtener las películas
 app.get("/api/movies", async (req, res) => {
